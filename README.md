@@ -2,6 +2,7 @@
 
 __Status__ _Draft_
 __Version__ `villa-v0.0.1`
+__License__ _BSD-3-clause_
 
 A REST API to describe smart devices in your home (or farm, or whatever you like).
 
