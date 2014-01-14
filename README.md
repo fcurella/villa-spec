@@ -1,6 +1,7 @@
 # Villa
 
 __Status__ _Draft_
+__Version__ `villa-v0.0.1`
 
 A REST API to describe smart devices in your home (or farm, or whatever you like).
 
@@ -16,7 +17,9 @@ Connection: close
 {
     "name": "home",
     "url": "http://192.168.100.1/",
-    "protocol": "villa-v0.0.1",
+    "protocols": [
+        "villa-v0.0.1"
+    ],
     "devices": [
         {
             "name": "Thermostat",
@@ -46,7 +49,9 @@ Connection: close
     "name": "Thermostat",
     "description": "",
     "url": "http://192.168.100.1/thermostat/",
-    "protocol": "villa-v0.0.1",
+    "protocols": [
+        "villa-v0.0.1"
+    ],
     "input": [
         {
             "name": "Furnace Status",
@@ -145,6 +150,9 @@ Content-Type: application/json
 Connection: close
 
 {
+    "protocols": [
+        "villa-v0.0.1"
+    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -154,7 +162,7 @@ Connection: close
 
 ```
 
-`curl -x PUT http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' --data '{"name": "Temperature", "type": "float", "unit": "F", "value": 69.0}'`
+`curl -x PUT http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Version: v0.0.1' --data '{"name": "Temperature", "type": "float", "unit": "F", "value": 69.0}'`
 
 ```
 HTTP/1.1 200 OK
@@ -162,6 +170,9 @@ Content-Type: application/json
 Connection: close
 
 {
+    "protocols": [
+        "villa-v0.0.1"
+    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -171,7 +182,7 @@ Connection: close
 
 ```
 
-`curl -x PATCH http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' --data '{"value": 70.0}'`
+`curl -x PATCH http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Version: v0.0.1' --data '{"value": 70.0}'`
 
 ```
 HTTP/1.1 200 OK
@@ -179,6 +190,9 @@ Content-Type: application/json
 Connection: close
 
 {
+    "protocols": [
+        "villa-v0.0.1"
+    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -190,48 +204,47 @@ Connection: close
 
 ## API Cheatsheet
 
-### Devices
+### Common Fields
 
 Mandatory fields:
 
 * `name`
 * `url`
-* `protocol` (required only for the top device)
+* `protocols` (only if object is the top-level object)
 
 Optional fields:
 
 * `description` Defaults to `''`
-* `input` Defaults to `[]`
-* `output` Defaults to `[]`
-* `devices` Defaults to `[]`
-* `protocol` Defaults to the closest ancestor's `protocol` value.
+* `protocols` Defaults to the closest ancestor's `protocols` value.
+
+
+### Devices
+
+Common fields, plus:
+
+* Optional fields:
+    * `input` Defaults to `[]`
+    * `output` Defaults to `[]`
+    * `devices` Defaults to `[]`
+    * `protocols` Defaults to the closest ancestor's `protocol` value.
 
 ### Inputs and Outputs 
 
-Mandatory fields:
+Common fields, plus:
 
-* `name`
-* `url`
-* `type` supported types are `str`, `float`, `int`, `bool` and `error`
-
-Optional fields:
-
-*  unit
+* Mandatory fields:
+    * `type` supported types are `str`, `float`, `int`, `bool` and `error`
+* Optional fields:
+    * `unit`
 
 ### Values
 
 Just like outputs, but with an additional, required `value`.
 
-Mandatory fields:
+Values' fields, plus:
 
-* `name`
-* `url`
-* `type` supported types are `str`, `float`, `int`, `bool` and `error`
-* `value`
-
-Optional fields:
-
-*  `unit` Defaults to `null`
+* Mandatory fields:
+    * `value`
 
 ## Specification
 
@@ -252,6 +265,14 @@ Any device may expose devices that are children of other, unrelated devices. For
 Devices may expose inputs and outputs. A device may choose to expose another, unrelated device's inputs and outputs as theirs.
 
 Outputs' URLs must be requested by using the `GET` HTTP verb. Inputs' URLs must be requested using the `PUT` or the `PATCH` HTTP verbs. And input and output may share the same URL (eg. for reading and setting a lightbulb status), in which case `GET`, `PUT` and `PATCH` are all allowed verbs for the URL.
+
+### Protocol versioning
+
+Every object must specifies which protocols can understand and speak.
+
+The top object in every response must contain the `protocols` key. Its value must be an array of protocol version names. Children objects inherits their parent's protocols by default, or they may override it by providing their own `protocols` value.
+
+The current version name is `villa-v0.0.1`.
 
 ## TODO
 
