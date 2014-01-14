@@ -1,6 +1,6 @@
 # Villa
 
-Status _Draft_
+__Status__ _Draft_
 
 A REST API to describe smart devices in your home (or farm, or whatever you like).
 
