@@ -234,7 +234,7 @@ Common fields, plus:
 Common fields, plus:
 
 * Mandatory fields:
-    * `type` supported types are `str`, `float`, `int`, `bool` and `error`
+    * `type` supported types are `"str"`, `"float"`, `"int"`, `"bool"` and `"error"`
 * Optional fields:
     * `unit`
 
