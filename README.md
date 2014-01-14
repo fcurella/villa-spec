@@ -69,14 +69,14 @@ Connection: close
         {
             "name": "Set HOT Temperature",
             "description": "Set a temperature for the furnace in HOT mode"
-            "url": "http://192.168.100.1/thermostat/furnace/hot_temp/",
+            "url": "http://192.168.100.1/thermostat/hot_temp/",
             "type": "float",
             "unit": "F"
         },
         {
             "name": "Set COLD Temperature",
             "description": "Set a temperature for the furnace in COLD mode"
-            "url": "http://192.168.100.1/thermostat/furnace/cold_temp/",
+            "url": "http://192.168.100.1/thermostat/cold_temp/",
             "type": "float",
             "unit": "F"
         }
@@ -104,6 +104,20 @@ Connection: close
             "url": "http://192.168.100.1/thermostat/ac/status/",
             "type": "bool"
         },
+        {
+            "name": "Get HOT Temperature",
+            "description": "Get the temperature set for the furnace in HOT mode"
+            "url": "http://192.168.100.1/thermostat/hot_temp/",
+            "type": "float",
+            "unit": "F"
+        },
+        {
+            "name": "Get COLD Temperature",
+            "description": "Get the temperature set for the furnace in COLD mode"
+            "url": "http://192.168.100.1/thermostat/cold_temp/",
+            "type": "float",
+            "unit": "F"
+        }
     ],
     "devices": [
         {
@@ -124,6 +138,23 @@ Connection: close
 ```
 
 `curl -x GET http://192.168.100.1/thermostat/thermometer/temperature/`
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: close
+
+{
+    "name": "Temperature",
+    "url": "http://192.168.100.1/thermostat/hot_temp/",
+    "type": "float",
+    "unit": "F",
+    "value": 65.0
+}
+
+```
+
+`curl -x PUT http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' --data '{"name": "Temperature", "type": "float", "unit": "F", "value": 69.0}'`
 
 ```
 HTTP/1.1 200 OK
