@@ -137,7 +137,7 @@ Connection: close
 
 ```
 
-`curl -x GET http://192.168.100.1/thermostat/thermometer/temperature/`
+`curl -x GET http://192.168.100.1/thermostat/hot_temp/`
 
 ```
 HTTP/1.1 200 OK
@@ -163,7 +163,7 @@ Connection: close
 
 {
     "name": "Temperature",
-    "url": "http://192.168.100.1/thermostat/thermometer/temperature/",
+    "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
     "unit": "F",
     "value": 69.0
@@ -180,7 +180,7 @@ Connection: close
 
 {
     "name": "Temperature",
-    "url": "http://192.168.100.1/thermostat/thermometer/temperature/",
+    "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
     "unit": "F",
     "value": 70.0
