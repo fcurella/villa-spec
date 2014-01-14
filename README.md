@@ -24,15 +24,15 @@ Connection: close
     "devices": [
         {
             "name": "Thermostat",
-            "url": "http://192.168.100.1/thermostat/",
+            "url": "http://192.168.100.1/thermostat/"
         },
         {
             "name": "Front Porch",
-            "url": "http://192.168.100.1/frontporch/",
+            "url": "http://192.168.100.1/frontporch/"
         },
         {
             "name": "Thermometer",
-            "url": "http://192.168.100.1/thermostat/thermometer/",
+            "url": "http://192.168.100.1/thermostat/thermometer/"
         }
     ]
 }
@@ -57,86 +57,69 @@ Connection: close
         {
             "name": "Furnace Status",
             "description": "Turns the furnace on or off."
-            "url": "http://192.168.100.1/thermostat/furnace/status/",
-            "type": "bool"
+            "url": "http://192.168.100.1/thermostat/furnace/status/"
         },
         {
             "name": "AC Status",
             "description": "Turns the AC on or off."
-            "url": "http://192.168.100.1/thermostat/ac/status/",
-            "type": "bool"
+            "url": "http://192.168.100.1/thermostat/ac/status/"
         },
         {
             "name": "Mode",
-            "description": "Set the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
-            "url": "http://192.168.100.1/thermostat/furnace/mode/",
-            "type": "str"
+            "description": "Set the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'"
         }
         {
             "name": "Set HOT Temperature",
             "description": "Set a temperature for the furnace in HOT mode"
-            "url": "http://192.168.100.1/thermostat/hot_temp/",
-            "type": "float",
-            "unit": "F"
+            "url": "http://192.168.100.1/thermostat/hot_temp/"
         },
         {
             "name": "Set COLD Temperature",
             "description": "Set a temperature for the furnace in COLD mode"
-            "url": "http://192.168.100.1/thermostat/cold_temp/",
-            "type": "float",
-            "unit": "F"
+            "url": "http://192.168.100.1/thermostat/cold_temp/"
         }
     ],
     "output": [
         {
             "name": "Temperature",
-            "url": "http://192.168.100.1/thermostat/thermometer/temperature/",
-            "type": "float",
-            "unit": "F"
+            "url": "http://192.168.100.1/thermostat/thermometer/temperature/"
         },
         {
             "name": "Mode",
             "description": "Get the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
             "url": "http://192.168.100.1/thermostat/furnace/mode/",
-            "type": "str"
         }
         {
             "name": "Furnace Status",
             "url": "http://192.168.100.1/thermostat/furnace/status/",
-            "type": "bool"
         },
         {
             "name": "AC Status",
             "url": "http://192.168.100.1/thermostat/ac/status/",
-            "type": "bool"
         },
         {
             "name": "Get HOT Temperature",
             "description": "Get the temperature set for the furnace in HOT mode"
-            "url": "http://192.168.100.1/thermostat/hot_temp/",
-            "type": "float",
-            "unit": "F"
+            "url": "http://192.168.100.1/thermostat/hot_temp/"
         },
         {
             "name": "Get COLD Temperature",
             "description": "Get the temperature set for the furnace in COLD mode"
-            "url": "http://192.168.100.1/thermostat/cold_temp/",
-            "type": "float",
-            "unit": "F"
+            "url": "http://192.168.100.1/thermostat/cold_temp/"
         }
     ],
     "devices": [
         {
             "name": "Thermometer",
-            "url": "http://192.168.100.1/thermostat/thermometer/",
+            "url": "http://192.168.100.1/thermostat/thermometer/"
         },
         {
             "name": "Furnace",
-            "url": "http://192.168.100.1/thermostat/furnace/",
+            "url": "http://192.168.100.1/thermostat/furnace/"
         }
         {
             "name": "Air conditioning",
-            "url": "http://192.168.100.1/thermostat/ac/",
+            "url": "http://192.168.100.1/thermostat/ac/"
         }
     ]
 }
@@ -205,7 +188,7 @@ Connection: close
 
 ## API Cheatsheet
 
-### Common Fields
+### IO Objects
 
 Mandatory fields:
 
@@ -218,10 +201,9 @@ Optional fields:
 * `description` Defaults to `''`
 * `protocols` Defaults to the closest ancestor's `protocols` value.
 
-
 ### Devices
 
-Common fields, plus:
+IO Objects' fields, plus:
 
 * Optional fields:
     * `input` Defaults to `[]`
@@ -229,23 +211,15 @@ Common fields, plus:
     * `devices` Defaults to `[]`
     * `protocols` Defaults to the closest ancestor's `protocol` value.
 
-### Inputs and Outputs 
-
-Common fields, plus:
-
-* Mandatory fields:
-    * `type` supported types are `"str"`, `"float"`, `"int"`, `"bool"` and `"error"`
-* Optional fields:
-    * `unit`
-
 ### Values
 
-Just like outputs, but with an additional, required `value`.
-
-Values' fields, plus:
+IO Objects' fields, plus:
 
 * Mandatory fields:
     * `value`
+    * `type` supported types are `"str"`, `"float"`, `"int"`, `"bool"` and `"error"`
+* Optional fields:
+    * `unit`
 
 ## Specification
 
@@ -263,7 +237,7 @@ Children devices must be represented only by their `name`, `url`, and optionally
 
 Any device may expose devices that are children of other, unrelated devices. For example, a `home` device contains a `thermostat`, which in turns contains a `thermometer`. The `home` device may choose to expose the `thermometer` device so it can be queried without interrogating `thermostat`.
 
-Devices may expose inputs and outputs. A device may choose to expose another, unrelated device's inputs and outputs as theirs.
+Devices may expose inputs and outputs (IO Objects). A device may choose to expose another, unrelated device's inputs and outputs as theirs.
 
 Outputs' URLs must be requested by using the `GET` HTTP verb. Inputs' URLs must be requested using the `PUT` or the `PATCH` HTTP verbs. And input and output may share the same URL (eg. for reading and setting a lightbulb status), in which case `GET`, `PUT` and `PATCH` are all allowed verbs for the URL.
 
