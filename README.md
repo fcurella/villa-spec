@@ -171,6 +171,23 @@ Connection: close
 
 ```
 
+`curl -x PATCH http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' --data '{"value": 70.0}'`
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: close
+
+{
+    "name": "Temperature",
+    "url": "http://192.168.100.1/thermostat/thermometer/temperature/",
+    "type": "float",
+    "unit": "F",
+    "value": 70.0
+}
+
+```
+
 ## API Cheatsheet
 
 ### Devices
@@ -234,7 +251,7 @@ Any device may expose devices that are children of other, unrelated devices. For
 
 Devices may expose inputs and outputs. A device may choose to expose another, unrelated device's inputs and outputs as theirs.
 
-Outputs' URLs must be requested by using the `GET` HTTP verb. Inputs' URLs must be requested using the `PUT` HTTP verb. And input and output may share the same URL (eg. for reading and setting a lightbulb status), in which case both `GET` and `PUT` are allowed verbs the URL.
+Outputs' URLs must be requested by using the `GET` HTTP verb. Inputs' URLs must be requested using the `PUT` or the `PATCH` HTTP verbs. And input and output may share the same URL (eg. for reading and setting a lightbulb status), in which case `GET`, `PUT` and `PATCH` are all allowed verbs for the URL.
 
 ## TODO
 
