@@ -70,7 +70,7 @@ Connection: close
             "name": "Mode",
             "description": "Set the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
             "url": "http://192.168.100.1/thermostat/furnace/mode/",
-            "type": "char"
+            "type": "str"
         }
         {
             "name": "Set HOT Temperature",
@@ -98,7 +98,7 @@ Connection: close
             "name": "Mode",
             "description": "Get the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
             "url": "http://192.168.100.1/thermostat/furnace/mode/",
-            "type": "char"
+            "type": "str"
         }
         {
             "name": "Furnace Status",
