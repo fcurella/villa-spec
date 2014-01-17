@@ -251,7 +251,7 @@ Actions' fields, plus:
 
 ## Specification
 
-`Villa` is a REST API to describe smart devices in your home (or farm, or whatever you like).
+`Villa` is a REST API to describe and operate smart devices in your home (or farm, or whatever you like).
 
 Its output is a JSON representation of a tree of devices. Any device can expose inputs, outputs, or other devices.
 
@@ -263,7 +263,7 @@ A device may expose other devices. Children devices inherit the protocol from th
 
 Children devices must be represented only by their `name`, `url`, and optionally their `description`.
 
-Any device may expose devices that are children of other, unrelated devices. For example, a `home` device contains a `thermostat`, which in turns contains a `thermometer`. The `home` device may choose to expose the `thermometer` device so it can be queried without interrogating `thermostat`.
+Any device may expose devices that are children of other, unrelated devices. For example, suppose a `home` device contains a `thermostat`, which in turns contains a `thermometer`. The `home` device may choose to expose the `thermometer` device so it can be queried without interrogating `thermostat`.
 
 Devices may expose actions and properties (collectively called IO Objects). A device may choose to expose any other, unrelated device's actions and properties as theirs.
 
@@ -278,7 +278,7 @@ The top object in every response must contain the `protocols` key. Its value mus
 The current version name is `villa-v0.0.1`.
 
 ## TODO
-
+* maybe add an 'options' or `enum` type
 * think more about versioning
 * moar examples
 * Error handling
