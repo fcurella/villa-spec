@@ -53,59 +53,81 @@ Connection: close
     "protocols": [
         "villa-v0.0.1"
     ],
-    "input": [
+    "actions": [
         {
             "name": "Furnace Status",
             "description": "Turns the furnace on or off."
-            "url": "http://192.168.100.1/thermostat/furnace/status/"
+            "url": "http://192.168.100.1/thermostat/furnace/status/",
+            "type": "bool",
         },
         {
             "name": "AC Status",
             "description": "Turns the AC on or off."
-            "url": "http://192.168.100.1/thermostat/ac/status/"
+            "url": "http://192.168.100.1/thermostat/ac/status/",
+            "type": "bool",
         },
         {
             "name": "Mode",
-            "description": "Set the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'"
+            "description": "Set the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
+            "type": "str"
         }
         {
             "name": "Set HOT Temperature",
             "description": "Set a temperature for the furnace in HOT mode"
-            "url": "http://192.168.100.1/thermostat/hot_temp/"
+            "url": "http://192.168.100.1/thermostat/hot_temp/",
+            "type": "float",
+            "unit": "F",
         },
         {
             "name": "Set COLD Temperature",
             "description": "Set a temperature for the furnace in COLD mode"
-            "url": "http://192.168.100.1/thermostat/cold_temp/"
+            "url": "http://192.168.100.1/thermostat/cold_temp/",
+            "type": "float",
+            "unit": "F",
         }
     ],
-    "output": [
+    "properties": [
         {
             "name": "Temperature",
-            "url": "http://192.168.100.1/thermostat/thermometer/temperature/"
+            "url": "http://192.168.100.1/thermostat/thermometer/temperature/",
+            "type": "float",
+            "unit": "F",
+            "value": 59.0
         },
         {
             "name": "Mode",
             "description": "Get the thermostat mode. Possible values are 'HOT', 'COLD', or 'OFF'",
             "url": "http://192.168.100.1/thermostat/furnace/mode/",
+            "type": "str",
+            "value": "HOT"
         }
         {
             "name": "Furnace Status",
             "url": "http://192.168.100.1/thermostat/furnace/status/",
+            "type": "bool",
+            "value": True
         },
         {
             "name": "AC Status",
             "url": "http://192.168.100.1/thermostat/ac/status/",
+            "type": "bool",
+            "value": false
         },
         {
             "name": "Get HOT Temperature",
-            "description": "Get the temperature set for the furnace in HOT mode"
-            "url": "http://192.168.100.1/thermostat/hot_temp/"
+            "description": "Get the temperature set for the furnace"
+            "url": "http://192.168.100.1/thermostat/hot_temp/",
+            "type": "float",
+            "unit": "F",
+            "value": 69.0
         },
         {
             "name": "Get COLD Temperature",
-            "description": "Get the temperature set for the furnace in COLD mode"
-            "url": "http://192.168.100.1/thermostat/cold_temp/"
+            "description": "Get the temperature set for the AC"
+            "url": "http://192.168.100.1/thermostat/cold_temp/",
+            "type": "float",
+            "unit": "F",
+            "value": 79.0
         }
     ],
     "devices": [
@@ -188,7 +210,7 @@ Connection: close
 
 ## API Cheatsheet
 
-### IO Objects
+### Common fields
 
 Mandatory fields:
 
@@ -203,23 +225,29 @@ Optional fields:
 
 ### Devices
 
-IO Objects' fields, plus:
+Common fields, plus:
 
 * Optional fields:
-    * `input` Defaults to `[]`
-    * `output` Defaults to `[]`
+    * `actions` Defaults to `[]`
+    * `properties` Defaults to `[]`
     * `devices` Defaults to `[]`
     * `protocols` Defaults to the closest ancestor's `protocol` value.
 
-### Values
+### Actions 
 
-IO Objects' fields, plus:
+Common fields, plus:
 
 * Mandatory fields:
-    * `value`
     * `type` supported types are `"str"`, `"float"`, `"int"`, `"bool"` and `"error"`
 * Optional fields:
     * `unit`
+
+### Properties
+
+Actions' fields, plus:
+
+* Mandatory fields:
+    * `value`
 
 ## Specification
 
@@ -237,9 +265,9 @@ Children devices must be represented only by their `name`, `url`, and optionally
 
 Any device may expose devices that are children of other, unrelated devices. For example, a `home` device contains a `thermostat`, which in turns contains a `thermometer`. The `home` device may choose to expose the `thermometer` device so it can be queried without interrogating `thermostat`.
 
-Devices may expose inputs and outputs (IO Objects). A device may choose to expose another, unrelated device's inputs and outputs as theirs.
+Devices may expose actions and properties (collectively called IO Objects). A device may choose to expose any other, unrelated device's actions and properties as theirs.
 
-Outputs' URLs must be requested by using the `GET` HTTP verb. Inputs' URLs must be requested using the `PUT` or the `PATCH` HTTP verbs. And input and output may share the same URL (eg. for reading and setting a lightbulb status), in which case `GET`, `PUT` and `PATCH` are all allowed verbs for the URL.
+Properties' URLs must be requested by using the `GET` HTTP verb. Actions' URLs must be requested using the `PUT` or the `PATCH` HTTP verbs. An Action and a Property may share the same URL (eg. for reading and setting a lightbulb status), in which case `GET`, `PUT` and `PATCH` are all allowed verbs for the URL.
 
 ### Protocol versioning
 
