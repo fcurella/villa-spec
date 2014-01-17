@@ -279,6 +279,7 @@ The current version name is `villa-v0.0.1`.
 
 ## TODO
 
+* think more about versioning
 * moar examples
 * Error handling
 * POST and DELETE methods?
