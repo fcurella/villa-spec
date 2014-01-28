@@ -14,13 +14,11 @@ A REST API to describe smart devices in your home (or farm, or whatever you like
 HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
+X-Villa-Version: villa-v0.0.1
 
 {
     "name": "home",
     "url": "http://192.168.100.1/",
-    "protocols": [
-        "villa-v0.0.1"
-    ],
     "devices": [
         {
             "name": "Thermostat",
@@ -44,15 +42,13 @@ Connection: close
 ```
 HTTP/1.1 200 OK
 Content-Type: application/json
+X-Villa-Version: villa-v0.0.1
 Connection: close
 
 {
     "name": "Thermostat",
     "description": "",
     "url": "http://192.168.100.1/thermostat/",
-    "protocols": [
-        "villa-v0.0.1"
-    ],
     "actions": [
         {
             "name": "Furnace Status",
@@ -154,11 +150,9 @@ Connection: close
 HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
+X-Villa-Version: villa-v0.0.1
 
 {
-    "protocols": [
-        "villa-v0.0.1"
-    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -168,17 +162,15 @@ Connection: close
 
 ```
 
-`curl -x PUT http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Version: v0.0.1' --data '{"name": "Temperature", "type": "float", "unit": "F", "value": 69.0}'`
+`curl -x PUT http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Accept: villa-v0.0.1' --data '{"name": "Temperature", "type": "float", "unit": "F", "value": 69.0}'`
 
 ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
+X-Villa-Version: villa-v0.0.1
 
 {
-    "protocols": [
-        "villa-v0.0.1"
-    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -188,17 +180,15 @@ Connection: close
 
 ```
 
-`curl -x PATCH http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Version: v0.0.1' --data '{"value": 70.0}'`
+`curl -x PATCH http://192.168.100.1/thermostat/hot_temp/ -H 'Content-Type: application/json' -H 'X-Villa-Accept: villa-v0.0.1' --data '{"value": 70.0}'`
 
 ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
+X-Villa-Version: villa-v0.0.1
 
 {
-    "protocols": [
-        "villa-v0.0.1"
-    ],
     "name": "Temperature",
     "url": "http://192.168.100.1/thermostat/hot_temp/",
     "type": "float",
@@ -271,15 +261,19 @@ Properties' URLs must be requested by using the `GET` HTTP verb. Actions' URLs m
 
 ### Protocol versioning
 
+Clients specify which version of the protocol they understand by using the `X-Villa-Accept` header. This header has the same format and works the same way as the `Accept` HTTP header.
+
 Every object must specifies which protocols can understand and speak.
 
-The top object in every response must contain the `protocols` key. Its value must be an array of protocol version names. Children objects inherits their parent's protocols by default, or they may override it by providing their own `protocols` value.
+Every response must include an `X-Villa-Version` header that specifies the protocol used by the top object.
 
-The current version name is `villa-v0.0.1`.
+Children objects inherits their parent's protocols by default, or they may override it by providing their own `protocol` value.
+
+The current protocol name is `villa-v0.0.1`.
 
 ## TODO
+
 * maybe add an 'options' or `enum` type
-* think more about versioning
 * moar examples
 * Error handling
 * POST and DELETE methods?
